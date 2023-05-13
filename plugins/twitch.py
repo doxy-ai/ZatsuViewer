@@ -8,6 +8,7 @@ from twitchAPI.helper import first
 from twitchAPI.oauth import UserAuthenticator
 from twitchAPI.types import AuthScope, ChatEvent
 from twitchAPI.chat import Chat, EventData, ChatMessage, ChatSub, ChatCommand
+from flask import escape
 import asyncio
 
 class Plugin(PluginBase):
@@ -79,8 +80,8 @@ class Plugin(PluginBase):
 			for id in msg.emotes:
 				start = int(msg.emotes[id][0]["start_position"])
 				end = int(msg.emotes[id][0]["end_position"]) + 1
-				emote = msg.text[start:end]
-				url = f"https://static-cdn.jtvnw.net/emoticons/v2/{id}/default/dark/1.0"
+				emote = escape(msg.text[start:end])
+				url = f"https://static-cdn.jtvnw.net/emoticons/v2/{id}/default/dark/3.0"
 				self.register_emote(emote, url)
 
 		# print(msg.emotes)
