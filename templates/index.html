@@ -1,0 +1,257 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+		<script>
+			var socket = io();
+			socket.on('new message', (html) => {
+				var messageHolder = $("#message-holder");
+				messageHolder.append(html);
+
+				// While there are more messages than the limit... remove them
+				console.log(messageHolder.children().length)
+				if (messageHolder.children().length >= 20)
+					messageHolder.find("div").slice(0, messageHolder.children().length - 20).remove()
+
+			});
+		</script>
+
+		<style data-jss="" data-meta="makeStyles">
+			.chat-text-normal {
+				word-break: break-word;
+			}
+			.chat-text-italic {
+				font-style: italic;
+				word-break: break-word;
+			}
+			.chat-text-new-emoji {
+				width: auto;
+				height: calc(var(--scale, 1) * 18px);
+			}
+			.chat-text-emoji {
+				width: calc(var(--scale, 1) * 18px);
+				height: calc(var(--scale, 1) * 18px);
+			}
+			.chat-text-emoji-image {
+				height: calc(var(--scale, 1) * 24px);
+			}
+			.chat-text-link {
+				color: #64b5f6;
+				cursor: pointer;
+				word-break: break-word;
+			}
+			.chat-text-link:hover {
+				text-decoration: underline;
+			}
+
+			html {
+				box-sizing: border-box;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			*,
+			*::before,
+			*::after {
+				box-sizing: inherit;
+			}
+			strong,
+			b {
+				font-weight: bolder;
+			}
+			body {
+				color: rgba(0, 0, 0, 0.87);
+				margin: 0;
+				font-size: 0.875rem;
+				font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+				font-weight: 400;
+				line-height: 1.43;
+				letter-spacing: 0.01071em;
+				background-color: #fafafa;
+			}
+			@media print {
+				body {
+					background-color: #fff;
+				}
+			}
+			body::backdrop {
+				background-color: #fafafa;
+			}
+
+			.jss3 {
+				top: 24px;
+				left: 0;
+				right: 0;
+				display: flex;
+				position: absolute;
+				align-items: center;
+				flex-direction: column;
+				justify-content: center;
+			}
+
+			.jss1 {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				min-width: 200px;
+			}
+			.jss2 {
+				height: calc(100vh - 33px);
+				min-width: 200px;
+				margin-top: 33px;
+			}
+
+			.jss4 {
+				height: inherit;
+				overflow: auto;
+				background-color: #091E42;
+			}
+			.jss5 {
+				height: inherit;
+				overflow: auto;
+				background-color: transparent;
+			}
+			.jss6 {
+				height: inherit;
+				overflow: auto;
+				background-color: #172B4D;
+			}
+
+			.message-item.guest {
+				background: linear-gradient(270deg, #403294 0%, #102C66 100%);
+			}
+			.message-item.guest .message-info {
+				display: flex;
+				flex-direction: row;
+			}
+			.message-item.guest .message-time {
+				color: #8777D9;
+			}
+			.message-item.guest .message-sender {
+				flex-grow: 1;
+			}
+			.guest-chip-container {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.guest-chip {
+				color: #EAE6FF;
+				padding: 2px 4px 1px;
+				font-size: 10px;
+				background: #8777D9;
+				font-family: Rubik;
+				font-weight: 500;
+				line-height: 1;
+				margin-right: 6px;
+				border-radius: 4px;
+				letter-spacing: 1px;
+			}
+			.top-bottom-alignment .chat-messages {
+				min-height: 100%;
+			}
+			.studio-guest .restream-embed-themes-chat-container {
+				overflow-y: auto !important;
+			}
+			.top-bottom-alignment .message-item:first-child {
+				margin-top: calc(16px * var(--scale)) !important;
+				margin-bottom: calc(8px * var(--scale));
+			}
+			.top-bottom-alignment .message-item:last-child {
+				margin-top: calc(8px * var(--scale));
+				margin-bottom: calc(16px * var(--scale));
+			}
+			.restream-embed-themes-chat-container_default-rounded .chat-messages > .message-item {
+				display: none;
+			}
+			.restream-embed-themes-chat-container_default-rounded .chat-messages > .message-item:nth-last-child(-n + 20) {
+				display: flex;
+			}
+		</style>
+
+		<style>
+			html,
+			body {
+				background: transparent !important;
+				overflow: hidden;
+			}
+
+			/* @media (max-width: 200px) {             */
+			#message-holder {
+				overflow: hidden;
+				top: 0;
+				left: -900%;
+				width: 1000%;
+				height: 100%;
+
+				display: flex;
+				justify-content: right;
+			}
+
+
+			.chat-messages.reversed {
+				flex-direction: row;
+				flex-wrap: wrap-reverse;
+				justify-content: flex-end;
+			}
+
+			.message-info {
+				height: auto;
+				margin-bottom: 0;
+				left: -5px !important;
+				display: inline;
+			}
+
+			.message-item {
+				background-color: rgba(0.1, .1, 0.1, .5) !important; /* Feel free to adjust this color; it's the background of the chat message box */
+				border-radius: 5px;
+				width: auto !important;
+				max-width: 4.9%;
+				margin-right: 0.5em;
+				height: 50px; /* Set this to be the same height as set in the browser source properties */
+				animation: none;
+			}
+			/* } */
+
+			.message-sender {
+				display: inline;
+				vertical-align: inherit !important;
+				/* color: #D30595 !important; Feel free to adjust this color; it's the username of the chatter */
+				letter-spacing: normal !important;
+				font-weight: 600 !important;
+				font-size: 1em !important;
+			}
+
+			.message-time {
+				display: none;
+			}
+
+			.message-text {
+				display: inline;
+				min-width: auto;
+			}
+
+			.message-plugin-image {
+				height: 10px;
+				width: auto;
+			}
+		</style>
+
+		<link rel="stylesheet" type="text/css" href="https://chat.restream.io/static/css/920.8cd1b082.chunk.css">
+	</head>
+
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root">
+			<div class="jss1">
+				<div class="jss5">
+					<div class=" " style="height: 100%; overflow: hidden; position: relative;">
+						<div id="message-holder" class="restream-embed-themes-chat-container restream-embed-themes-chat-container_default-compact" style="--scale:1; --backgroundOpacity:0; --messageBackgroundOpacity:1; --hideMessagesAfter:0s;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

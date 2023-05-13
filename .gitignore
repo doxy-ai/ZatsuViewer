@@ -1,0 +1,4 @@
+__pycache__
+*/__pycache__
+plugins/credentials/*.py
+!plugins/credentials/*.example.py
