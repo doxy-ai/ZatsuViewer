@@ -12,10 +12,11 @@
 				messageHolder.append(html);
 
 				// While there are more messages than the limit... remove them
-				console.log(messageHolder.children().length)
 				if (messageHolder.children().length >= 20)
-					messageHolder.find("div").slice(0, messageHolder.children().length - 20).remove()
+					messageHolder.find("div").slice(0, messageHolder.children().length - 20).remove();
 
+				// Make sure we are scrolled so we can see the newest messages!
+				messageHolder.animate({ scrollTop: messageHolder[0].scrollHeight }, "slow");
 			});
 		</script>
 
