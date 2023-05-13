@@ -12,7 +12,7 @@ class Message:
 	pluginImageUrl: str = ""
 	"""str: URL for plugin image (the icon that is displayed in front of the user's name/badges)"""
 
-	sendTime: datetime.datetime = datetime.datetime.now()
+	sendTime: datetime.datetime = 0
 	"""datetime.datetime: time message was sent"""
 
 	sender: str = ""

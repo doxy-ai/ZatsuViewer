@@ -22,6 +22,7 @@ import os
 import traceback
 import asyncio
 import threading
+import datetime
 from pathlib import Path
 from importlib import util
 from ring_buffer import RingBuffer
@@ -56,6 +57,7 @@ class App:
 			message: A message to be received and added to the message queue.
 		"""
 		self.messages.max = self.maxMessages
+		if message.sendTime == 0: message.sendTime = datetime.datetime.now()
 		self.messages.append(message)
 
 		# Notify all of the plugins that a message was received
