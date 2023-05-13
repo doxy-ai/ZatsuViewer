@@ -57,3 +57,25 @@ class PluginBase:
 			url (str): The URL where the emote can be found.
 		"""
 		_singletonApp.register_emote(emote, url)
+	
+	def register_badge(self, badge, url):
+		"""
+		A method that can be called to register a badge with the application.
+
+		Args:
+			badge (str): The name of the badge.
+			url (str): The URL where the badge can be found.
+		"""
+		_singletonApp.register_badge(badge, url)
+
+	def register_badge_if_not_registered(self, badge, url):
+		"""
+		A method that can be called to register a badge with the application.
+		Only registers the badge if the badge has not previously been registered
+
+		Args:
+			badge (str): The name of the badge.
+			url (str): The URL where the badge can be found.
+		"""
+		if badge not in _singletonApp.registered_badges:
+			self.register_badge(badge, url)

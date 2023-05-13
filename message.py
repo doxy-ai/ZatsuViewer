@@ -1,6 +1,6 @@
 # requirements: pip install colour
 import api
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from flask import escape
 from colour import Color
 import datetime
@@ -24,12 +24,20 @@ class Message:
 	content: str = ""
 	"""str: message content"""
 
+	senderBadges : list[str] = field(default_factory=list)
+	"""[str]: Badges that should be displayed next to the user's name"""
+
 	def render_as_html(self) -> str:
 		"""Render message as HTML
 
 		Returns:
 			str: HTML representation of the message
 		"""
+		badgeHTML = ""
+		print(self.senderBadges)
+		for badge in self.senderBadges:
+			if badge in api._singletonApp.registered_badges:
+				badgeHTML += f'<img class="icon-platform message-badge-image" src="{api._singletonApp.registered_badges[badge]}">\n'
 		img_tag = f'<img class="icon-platform message-plugin-image" src="{self.pluginImageUrl}">' if len(self.pluginImageUrl) > 0 else ""
 		return f"""
 <div class="message-item">
@@ -37,6 +45,7 @@ class Message:
         <div class="message-info-container">
             <div class="message-info">
                 {img_tag}
+				{badgeHTML}
                 <span class="message-sender" style="color: {self.senderColor.hex}">{escape(self.sender)}</span>
                 <span class="message-time">{self.sendTime}</span>
             </div>

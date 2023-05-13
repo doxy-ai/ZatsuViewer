@@ -34,6 +34,7 @@ class App:
 	"""
 	loaded_plugins = []  # A list of loaded plugins
 	registered_emotes = {}  # A dictionary of registered emotes
+	registered_badges = {}  # A dictionary of registered badges
 
 	maxMessages = 20  # Maximum number of messages to keep in the queue
 	messages = RingBuffer(maxMessages)  # A ring buffer of messages
@@ -75,6 +76,16 @@ class App:
 			url: The URL of the image for the emote.
 		"""
 		self.registered_emotes[emote] = url
+
+	def register_badge(self, badge, url):
+		"""
+		Registers a badge with the specified URL.
+
+		Args:
+			badge: The badge to register.
+			url: The URL of the image for the badge.
+		"""
+		self.registered_badges[badge] = url
 
 	def parse_emotes(self, message):
 		"""

@@ -38,6 +38,12 @@ class Plugin(PluginBase):
 		chat.register_event(ChatEvent.MESSAGE, self.on_message)
 		chat.start()
 
+		self.register_badge_if_not_registered("broadcaster", "https://static-cdn.jtvnw.net/badges/v1/5527c58c-fb7d-422d-b71b-f309dcb85cc1/3")
+		self.register_badge_if_not_registered("moderator", "https://static-cdn.jtvnw.net/badges/v1/3267646d-33f0-4b17-b3df-f923a41db1d0/3")
+		self.register_badge_if_not_registered("vip", "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/3")
+		self.register_badge_if_not_registered("founder", "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/3")
+		# self.register_badge_if_not_registered("subscriber", "provide yourself")
+
 	async def on_ready(self, ready_event: EventData):
 		"""
 		Asynchronous method that is called when the bot is ready to join a channel.
@@ -59,7 +65,8 @@ class Plugin(PluginBase):
 				self.register_emote(emote, url)
 
 		# print(msg.emotes)
-		# print(msg.user.badges)
+		# print(list(msg.user.badges.keys()))
 
 		# Notify the app of the new message!
-		self.recieve_message(Message(content=msg.text, sender=msg.user.display_name, senderColor=Color(msg.user.color), pluginImageUrl=self.pluginImageURL))
+		badges = list(msg.user.badges.keys()) if msg.user.badges is not None else []
+		self.recieve_message(Message(content=msg.text, sender=msg.user.display_name, senderColor=Color(msg.user.color), senderBadges=badges, pluginImageUrl=self.pluginImageURL))
