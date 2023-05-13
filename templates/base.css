@@ -64,8 +64,8 @@ body::backdrop {
 
 .chat-text-emoji,
 .chat-text-emoji-image {
-	height: calc(var(--scale, 1) * 24px);
-	width: calc(var(--scale, 1) * 18px);
+	height: calc(var(--scale, 1) * 18px);
+	width: calc(var(--scale, 1) * 24px);
 }
 
 
