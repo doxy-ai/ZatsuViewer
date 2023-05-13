@@ -39,6 +39,7 @@ class Message:
 			if badge in api._singletonApp.registered_badges:
 				badgeHTML += f'<img class="icon-platform message-badge-image" src="{api._singletonApp.registered_badges[badge]}">\n'
 		img_tag = f'<img class="icon-platform message-plugin-image" src="{self.pluginImageUrl}">' if len(self.pluginImageUrl) > 0 else ""
+		color = self.senderColor if self.senderColor != Color("black") else Color("white")
 		return f"""
 <div class="message-item">
     <div class="chat-messages reversed">
@@ -46,7 +47,7 @@ class Message:
             <div class="message-info">
                 {img_tag}
 				{badgeHTML}
-                <span class="message-sender" style="color: {self.senderColor.hex}">{escape(self.sender)}</span>
+                <span class="message-sender" style="color: {color.hex}">{escape(self.sender)}</span>
                 <span class="message-time">{self.sendTime}</span>
             </div>
             <div class="message-text"><span class="chat-text-normal">{api._singletonApp.parse_emotes(escape(self.content))}</span></div>
