@@ -140,3 +140,9 @@ class App:
 		module = util.module_from_spec(spec)
 		spec.loader.exec_module(module)
 		return module
+
+	def find_plugin(self, name):
+		for plugin in self.loaded_plugins:
+			if plugin.name == name:
+				return plugin
+		return null

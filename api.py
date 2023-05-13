@@ -88,3 +88,6 @@ class PluginBase:
 		"""
 		if badge not in _singletonApp.registered_badges:
 			self.register_badge(badge, url)
+
+	def find_plugin(self, name):
+		return _singletonApp.find_plugin(name)

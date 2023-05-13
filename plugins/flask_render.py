@@ -8,7 +8,7 @@ messages = None
 class Plugin(PluginBase):
 	"""A plugin that uses Flask to render HTML templates."""
 
-	name = "Flask Renderer"
+	name = "Flask Renderer Plugin"
 
 	async def go(self):
 		"""Starts the webserver on another thread."""
