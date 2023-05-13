@@ -13,23 +13,47 @@ socketIO = SocketIO(flask)
 # Create an instance of the App class
 _singletonApp = App()
 
-# Define a PluginBase class
 class PluginBase:
-	# Set a default name for the plugin
+	"""
+	Base class for creating plugins for the chat application.
+
+	Attributes:
+		name (str): The name of the plugin.
+	"""
+
 	name = "base"
 
-	# Define a method that doesn't do anything
 	async def go(self):
+		"""
+		A method that will be called whenever the plugin is loaded.
+		This method gets called in a seperate thread so it is perfectly fine to start infinate loops here if nessicary!
+		"""
 		pass
 
-	# Define a method that will be called whenever the application receives a new message
 	def on_message_recieved(self, messages):
+		"""
+		A method that will be called whenever the application receives a new message.
+
+		Args:
+			messages (list of Message): A ring buffer of Message objects.
+		"""
 		pass
 
-	# Define a method that can be called to signal to the application that a new message has been received
 	def recieve_message(self, message):
+		"""
+		A method that can be called to signal to the application that a new message has been received.
+
+		Args:
+			message (Message): A Message object to be received by the application.
+		"""
 		_singletonApp.recieve_message(message)
 
-	# Define a method that can be called to register an emote with the application
 	def register_emote(self, emote, url):
+		"""
+		A method that can be called to register an emote with the application.
+
+		Args:
+			emote (str): The name of the emote.
+			url (str): The URL where the emote can be found.
+		"""
 		_singletonApp.register_emote(emote, url)

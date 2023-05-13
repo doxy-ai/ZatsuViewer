@@ -1,0 +1,92 @@
+/* HTML */
+html {
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+	background: transparent !important;
+	overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+strong,
+b {
+	font-weight: bolder;
+}
+
+
+/* Body */
+body {
+	background-color: #fafafa;
+	color: rgba(0, 0, 0, 0.87);
+	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	font-size: 0.875rem;
+	font-weight: 400;
+	letter-spacing: 0.01071em;
+	line-height: 1.43;
+	margin: 0;
+}
+
+@media print {
+	body {
+		background-color: #fff;
+	}
+}
+
+body::backdrop {
+	background-color: #fafafa;
+}
+
+
+/* Other classes */
+.chat-text-normal,
+.chat-text-italic,
+.chat-text-link {
+	word-break: break-word;
+}
+
+.chat-text-italic {
+	font-style: italic;
+}
+
+.chat-text-new-emoji {
+	width: auto;
+	height: calc(var(--scale, 1) * 18px);
+}
+
+.chat-text-emoji,
+.chat-text-emoji-image {
+	height: calc(var(--scale, 1) * 24px);
+	width: calc(var(--scale, 1) * 18px);
+}
+
+
+.chat-text-link {
+	color: #64b5f6;
+	cursor: pointer;
+}
+
+.chat-text-link:hover {
+	text-decoration: underline;
+}
+
+.jss1 {
+	height: 100%;
+	min-width: 200px;
+	position: absolute;
+	width: 100%;
+}
+
+.jss5 {
+	background-color: transparent;
+	height: inherit;
+	overflow: auto;
+}

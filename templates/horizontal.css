@@ -1,0 +1,41 @@
+
+@media (max-height: 200px) {             
+	#message-holder {
+		overflow: hidden;
+		top: 0;
+		left: -900%;
+		width: 1000%;
+		height: 100%;
+
+		display: flex;
+		justify-content: right;
+	}
+
+	.chat-messages.reversed {
+		flex-direction: row;
+		flex-wrap: wrap-reverse;
+		justify-content: flex-end;
+	}
+
+	.message-info {
+		height: auto;
+		margin-bottom: 0;
+		left: -5px !important;
+		display: inline;
+	}
+
+	.message-item {
+		width: auto !important;
+		max-width: 4.9%;
+		margin-right: 0.5em;
+		height: 50px; /* Set this to be the same height as set in the browser source properties */
+	}
+
+	.message-sender {
+		display: inline;
+		vertical-align: inherit !important;
+		letter-spacing: normal !important;
+		font-weight: 600 !important;
+		font-size: 1em !important;
+	}
+}

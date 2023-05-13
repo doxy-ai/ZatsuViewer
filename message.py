@@ -1,28 +1,37 @@
 # requirements: pip install colour
-
-# Import necessary modules
 import api
 from dataclasses import dataclass
 from flask import escape
 from colour import Color
 import datetime
 
-# Define a data class for the message object
 @dataclass
 class Message:
-    # Define default values for message properties
-    pluginImageUrl: str = ""
-    sendTime: datetime.datetime = datetime.datetime.now()
-    sender: str = ""
-    senderColor: Color = Color("#808080")
-    content: str = ""
+	"""A class representing a chat message"""
 
-    # Define a method to render the message as HTML
-    def render_as_html(self):
-        # Generate img tag if plugin image url is not empty, otherwise use empty string
-        img_tag = f'<img src="{self.pluginImageUrl}">' if len(self.pluginImageUrl) > 0 else ""
-        # Format message HTML string using string interpolation
-        return f"""
+	pluginImageUrl: str = ""
+	"""str: URL for plugin image (the icon that is displayed in front of the user's name/badges)"""
+
+	sendTime: datetime.datetime = datetime.datetime.now()
+	"""datetime.datetime: time message was sent"""
+
+	sender: str = ""
+	"""str: sender of the message"""
+
+	senderColor: Color = Color("#808080")
+	"""Color: color of the sender's name in the message"""
+
+	content: str = ""
+	"""str: message content"""
+
+	def render_as_html(self) -> str:
+		"""Render message as HTML
+
+		Returns:
+			str: HTML representation of the message
+		"""
+		img_tag = f'<img class="icon-platform message-plugin-image" src="{self.pluginImageUrl}">' if len(self.pluginImageUrl) > 0 else ""
+		return f"""
 <div class="message-item">
     <div class="chat-messages reversed">
         <div class="message-info-container">
