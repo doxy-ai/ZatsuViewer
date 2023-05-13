@@ -19,7 +19,6 @@ class Plugin(PluginBase):
 
 		# Wait for twitch to figure out what the user id is
 		while twitch.id == None: await asyncio.sleep(.1)
-		print(twitch.id)
 
 		globalEmotes = requests.get(f'https://api.betterttv.net/3/cached/emotes/global').json()
 		userEmotes = requests.get(f'https://api.betterttv.net/3/cached/users/{self.platform}/{twitch.id}').json()

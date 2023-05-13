@@ -34,7 +34,6 @@ class Message:
 			str: HTML representation of the message
 		"""
 		badgeHTML = ""
-		print(self.senderBadges)
 		for badge in self.senderBadges:
 			if badge in api._singletonApp.registered_badges:
 				badgeHTML += f'<img class="icon-platform message-badge-image" src="{api._singletonApp.registered_badges[badge]}">\n'

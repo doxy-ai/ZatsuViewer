@@ -53,22 +53,27 @@ class Plugin(PluginBase):
 		self.register_badge_if_not_registered("vip", "https://static-cdn.jtvnw.net/badges/v1/b817aba4-fad8-49e2-b88a-7cc744dfa6ec/3")
 		self.register_badge_if_not_registered("founder", "https://static-cdn.jtvnw.net/badges/v1/511b78a9-ab37-472f-9569-457753bbe7d3/3")
 
+		# Every 30 minutes make sure that the access token is refreshed
+		while True:
+			await asyncio.sleep(1800)
+			# await asyncio.sleep(15)
+			await twitch.refresh_used_token()
+			print("Twitch access token refreshed")
 
-		# Potential work around
-		# 1) Set a timer for 1 hour
-		# 2) When the timer goes off, we shutdown the twitch conncetion and start another one...
 
 	async def on_ready(self, ready_event: EventData):
 		"""
 		Asynchronous method that is called when the bot is ready to join a channel.
 		"""
-		# print('Bot is ready for work, joining channels')
+		print('Bot is ready for work, joining twitch channel')
 		await ready_event.chat.join_room(self.targetChannel)
 
 	async def on_message(self, msg: ChatMessage):
 		"""
 		Asynchronous method that is called when a chat message is received in the target channel.
 		"""
+		print(msg.text)
+
 		# Register all of the emotes in the message with the emote replacer
 		if msg.emotes is not None:
 			for id in msg.emotes:
