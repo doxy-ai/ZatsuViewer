@@ -39,6 +39,15 @@ class PluginBase:
 		"""
 		pass
 
+	def should_message_be_sent(self, message) -> bool:
+		"""
+		A method that will be called whenever the application receives a new message, is used to determine if the message should be displayed or not
+
+		Args:
+			message: The message being examined
+		"""
+		return True
+
 	def recieve_message(self, message):
 		"""
 		A method that can be called to signal to the application that a new message has been received.

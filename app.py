@@ -57,8 +57,12 @@ class App:
 		Args:
 			message: A message to be received and added to the message queue.
 		"""
-		self.messages.max = self.maxMessages
 		if message.sendTime == 0: message.sendTime = datetime.datetime.now()
+		for plugin in self.loaded_plugins:
+			if not plugin.should_message_be_sent(message): 
+				return
+
+		self.messages.max = self.maxMessages
 		self.messages.append(message)
 
 		# Notify all of the plugins that a message was received
