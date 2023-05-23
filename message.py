@@ -18,7 +18,7 @@ class Message:
 	sender: str = ""
 	"""str: sender of the message"""
 
-	senderColor: Color = Color("#808080")
+	senderColor: Color = field(default_factory=Color("#808080"))
 	"""Color: color of the sender's name in the message"""
 
 	content: str = ""
