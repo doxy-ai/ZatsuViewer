@@ -5,6 +5,7 @@ from app import App
 from message import Message
 from colour import Color
 from datetime import datetime
+from tkinter import ttk, Tk
 
 # Initialize Flask and SocketIO instances
 flask = Flask(__name__)
@@ -47,6 +48,75 @@ class PluginBase:
 			message: The message being examined
 		"""
 		return True
+
+
+	def _updateKey(self, key, entry):
+		"""
+		Update the value of a class field with the value from the entry.
+
+		Args:
+			key (str): The name of the key to update.
+			entry: An instance of some class representing the user input entry.
+		"""
+		newValue = entry.get()
+		if getattr(self, key) != newValue:
+			print(f"Updating {key}")
+			setattr(self, key, newValue)
+
+	def setupGUI(self, tabParent, applyButton):
+		"""
+		Set up the graphical user interface (GUI) based on the class attributes.
+
+		Args:
+			tabParent: An form in a tab field representing the parent container for the GUI elements.
+
+		Returns:
+			ttk.Frame: The frame containing the GUI elements.
+		"""
+		def camel2Title(old):
+			"""
+			Convert a string from camel case to title case with spaces.
+
+			Args:
+				old (str): The string to convert.
+
+			Returns:
+				str: The converted string.
+			"""
+			out = ""
+			for i, char in enumerate(old):
+				if char.isupper() or char == '_':
+					out += ' '
+				out += char.upper() if i == 0 else char
+			return out
+
+		# Create a frame to hold the GUI elements
+		content = ttk.Frame(tabParent)
+		content.grid()
+
+		row = 0
+		for key in type(self).__dict__.keys():
+			if key[0] == "_": continue  # Skip keys starting with underscore
+			if key == "name": continue  # Skip the key "name"
+			if key == "pluginImageURL": continue  # Skip the key "pluginImageURL"
+			if callable(type(self).__dict__[key]): continue  # Skip if the value is a function
+
+			# Create a label with the title-cased key and place it in the grid
+			ttk.Label(content, text=camel2Title(key)).grid(row=row)
+
+			# Create a text entry and insert the value associated with the field
+			entry = ttk.Entry(content)
+			entry.insert(10, type(self).__dict__[key])
+			entry.grid(row=row, column=1)
+
+			# Bind hitting enter or moving your mouse out of the field to update the field with the entry value
+			entry.bind("<Return>", lambda _, key=key: self._updateKey(key, entry))
+			entry.bind("<Leave>", lambda _, key=key: self._updateKey(key, entry))
+
+			row += 1  # Increment the row counter
+
+		return content
+
 
 	def recieve_message(self, message):
 		"""

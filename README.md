@@ -20,7 +20,8 @@ There is also an example of a profanity filter and a pinger which will play a so
 3) Unzip ZatsuDachi somewhere and note where
 4) Open a terminal (this can be done by opening the start window on windows and typing cmd)
 5) Navigate to where you unzipped ZatsuDachi (cd <the folder from step 3> on windows)
-6) Run `pip install colour flask flask_socketio`to install ZatsuDachi's dependencies.
+6) Run `pip install colour flask flask_socketio tk` to install ZatsuDachi's dependencies. 
+*NOTE: If you are using linux you will need to install libtk using your package manager*
 7) (optional) Download one of the platform plugins above and follow the setup steps at the top of the file!
 8) Run `python zatsu.py` in the terminal we opened to launch ZatsuDachi
 9) (optional) A URL (something along the lines of http://127.0.0.1:8080) should have been printed by step 8. If you paste that URL into a web browser or an OBS browser source to view your chat! 

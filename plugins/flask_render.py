@@ -24,6 +24,9 @@ class Plugin(PluginBase):
 		messages = appMessages # Should be a reference? So no memory copied?
 		api.socketIO.emit("new message", messages[-1].render_as_html()) # Notify the page that a new message has arrived!
 
+	def setupGUI(self, tabParent, applyBtn):
+		return None
+
 
 @api.flask.route("/")
 def index():
