@@ -57,15 +57,11 @@ body::backdrop {
 	font-style: italic;
 }
 
-.chat-text-new-emoji {
-	width: auto;
-	height: calc(var(--scale, 1) * 18px);
-}
-
 .chat-text-emoji,
-.chat-text-emoji-image {
+.chat-text-emoji-image,
+.chat-text-new-emoji {
 	height: calc(var(--scale, 1) * 18px);
-	width: calc(var(--scale, 1) * 24px);
+	width: auto;
 }
 
 
