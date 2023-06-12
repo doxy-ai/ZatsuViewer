@@ -105,6 +105,7 @@ class App:
 			
 		# Show the GUI
 		frm.pack(expand=1, fill='both')
+		print("Close the GUI and press CTRL+C to close!")
 		root.mainloop()
 
 
