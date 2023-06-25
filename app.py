@@ -28,7 +28,7 @@ from pathlib import Path
 from importlib import util
 from ring_buffer import RingBuffer
 from message import Message
-from tkinter import ttk, Tk, W, E
+from tkinter import ttk, Tk, W, E, N
 from killableThread import KThread
 
 class App:
@@ -83,7 +83,7 @@ class App:
 		frm = ttk.Frame(root)
 		frm.grid()
 		tab_parent = ttk.Notebook(frm)
-		tab_parent.grid(row=0, sticky=W+E)
+		tab_parent.grid(row=0, sticky='we')
 
 		# Now add a button that restarts some threads with the given changes
 		applyBtn = ttk.Button(frm, text='Apply Changes', command=lambda: self.restart())
@@ -104,7 +104,7 @@ class App:
 			else: threading.Thread(target=lambda: asyncio.run(plugin.go())).start()
 			
 		# Show the GUI
-		frm.pack(expand=1, fill='both')
+		frm.pack(anchor=N, fill='both', expand=True)
 		print("Close the GUI and press CTRL+C to close!")
 		root.mainloop()
 

@@ -102,12 +102,12 @@ class PluginBase:
 			if callable(type(self).__dict__[key]): continue  # Skip if the value is a function
 
 			# Create a label with the title-cased key and place it in the grid
-			ttk.Label(content, text=camel2Title(key)).grid(row=row)
+			ttk.Label(content, text=camel2Title(key)).grid(row=row, sticky='nesw')
 
 			# Create a text entry and insert the value associated with the field
 			entry = ttk.Entry(content)
 			entry.insert(10, type(self).__dict__[key])
-			entry.grid(row=row, column=1)
+			entry.grid(row=row, column=1, sticky='nesw')
 
 			# Bind hitting enter or moving your mouse out of the field to update the field with the entry value
 			entry.bind("<Return>", lambda _, key=key: self._updateKey(key, entry))
