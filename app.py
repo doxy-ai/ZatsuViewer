@@ -43,6 +43,10 @@ class App:
 	messages = RingBuffer(maxMessages)  # A ring buffer of messages
 
 	threads = [] # The threads that should get restarted when configuation changes update
+	
+	# References to special GUI elements
+	guiRoot = None
+	applyBtn = None
 
 	def restart(self):
 		"""
@@ -55,19 +59,33 @@ class App:
 		oldThreads = self.threads
 		self.threads = []
 
+		# Provide some feedback to the user
+		self.applyBtn['text'] = "Applying... (please wait)"
+		self.applyBtn['state'] = "disabled"
+		self.guiRoot.update_idletasks()
+
 		# Iterate over each thread in the original list
 		for thread in oldThreads:
+			plugin = self.find_plugin(thread.name)
 			# Terminate or stop the execution of the thread
+			plugin.stop()
 			thread.kill()
-
-		# for thread in oldThreads:
-		# 	while thread.is_alive():
-		# 		time.sleep(100)
-
+			thread.join()
+			
 			# Create a new thread based on the original thread's target function
 			# and append it to the list of threads
-			self.threads.append(KThread(target=thread.target))
-			self.threads[-1].start()
+			print(f"Restarting {plugin.name}")
+			plugin._keepAlive = True
+			self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()), name=plugin.name))
+
+		# Start all the new threads
+		for thread in self.threads:
+			thread.start()
+
+		# Reset the apply button
+		self.applyBtn['text'] = "Apply Changes"
+		self.applyBtn['state'] = "normal"
+
 
 
 	def go(self):
@@ -78,26 +96,26 @@ class App:
 		self.load_plugins()
 
 		# Create a tab holder
-		root = Tk()
-		root.title("ZatsuDachi Configuration")
-		frm = ttk.Frame(root)
+		self.guiRoot = Tk()
+		self.guiRoot.title("ZatsuDachi Configuration")
+		frm = ttk.Frame(self.guiRoot)
 		frm.grid()
 		tab_parent = ttk.Notebook(frm)
 		tab_parent.grid(row=0, sticky='we')
 
 		# Now add a button that restarts some threads with the given changes
-		applyBtn = ttk.Button(frm, text='Apply Changes', command=lambda: self.restart())
-		applyBtn.grid(row=1)
+		self.applyBtn = ttk.Button(frm, text='Apply Changes', command=lambda: self.restart())
+		self.applyBtn.grid(row=1)
 
 		# For each loaded plugin...
 		for plugin in self.loaded_plugins:
 			# Attempt to setup its gui
-			gui = plugin.setupGUI(tab_parent, applyBtn)
+			gui = plugin.setupGUI(tab_parent, self.applyBtn)
 			# If there is a gui... start its thread in a way that can be restarted
 			if gui != None: 
 				tab_parent.add(gui, text=plugin.name) # Add the plugin as a tab!
 
-				self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()))) #TODO: is it worth the effort to check if its a coroutine? or just assume everything is?
+				self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()), name=plugin.name)) #TODO: is it worth the effort to check if its a coroutine? or just assume everything is?
 				self.threads[-1].start()
 
 			# Otherwise start its thread and forget about it!
@@ -106,7 +124,7 @@ class App:
 		# Show the GUI
 		frm.pack(anchor=N, fill='both', expand=True)
 		print("Close the GUI and press CTRL+C to close!")
-		root.mainloop()
+		self.guiRoot.mainloop()
 
 
 
@@ -184,6 +202,9 @@ class App:
 				except Exception:
 					print(fname + " is not a valid plugin!")
 					traceback.print_exc()
+		
+		# Sort the plugins alphabetically (but with URL Settings always being first!)
+		self.loaded_plugins.sort(key=lambda p: p.name if p.name != "URL Settings Display" else "\0URL Settings")
 
 	def load_module(self, path):
 		"""

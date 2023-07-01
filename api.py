@@ -23,6 +23,14 @@ class PluginBase:
 	"""
 
 	name = "base"
+	_keepAlive = True
+
+	def stop(self):
+		"""
+		Method called whenever a plugin should stop!
+		This does some book keeping so must be called by derived classes as well!
+		"""
+		self._keepAlive = False
 
 	async def go(self):
 		"""

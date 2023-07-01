@@ -23,7 +23,7 @@ option = sys.argv[1]
 file_urls = {
 	"twitch": "https://gist.githubusercontent.com/doxy-ai/257878eed21a88aaf6f37d37d5168319/raw/6c7b3bfbcb633292c284ce42f00ee8447ce820ac/twitch_w_bttv.py",
 	"youtube": "https://gist.githubusercontent.com/doxy-ai/f567236fd6320e721cbd127b11ca7cb0/raw/c0ff9d4c450ae002bf45b5e1637af0542fd4ee9d/youtube.py",
-	"vstream": "https://gist.githubusercontent.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4/raw/3b0871ded0d382b013bd4cb4e348c85405019bb1/vstream.py"
+	"vstream": "https://gist.githubusercontent.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4/raw/2a867a4ea15a6792e671c2824076ddd18c19bdff/vstream.py"
 }
 
 # Check if the provided option is valid

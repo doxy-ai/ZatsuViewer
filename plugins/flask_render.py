@@ -1,6 +1,5 @@
 from flask import render_template
 import api
-import webbrowser
 import tkinter as tk
 from api import PluginBase
 
@@ -28,22 +27,7 @@ class Plugin(PluginBase):
 		api.socketIO.emit("new message", messages[-1].render_as_html()) # Notify the page that a new message has arrived!
 
 	def setupGUI(self, tabParent, applyBtn):
-		# Show GUI for changing port
-		content = PluginBase.setupGUI(self, tabParent, applyBtn)
-
-		# Provide a link to open chat in the browser
-		link = tk.Label(content, text="Open Chat in Browser", fg="blue", cursor="hand2")
-		link.grid(row=1, columnspan=2, sticky='nesw')
-		link.bind("<Button-1>", lambda e: webbrowser.open_new_tab(f"http://127.0.0.1:{self.port}"))
-
-		# Also provide the link as selectable + copyable text
-		ent = tk.Entry(content, state='readonly', fg='black')
-		ent.grid(row=2, columnspan=2, sticky='nesw')
-		text = tk.StringVar()
-		text.set(f"Running on: 127.0.0.1:{self.port}")
-		ent.config(textvariable=text, relief='flat')
-		
-		return content
+		return None
 
 
 @api.flask.route("/")
