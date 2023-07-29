@@ -20,6 +20,7 @@ class PluginBase:
 
 	Attributes:
 		name (str): The name of the plugin.
+		_keepAlive (bool): When set to false indicates that the plugin's main loop should stop!
 	"""
 
 	name = "base"
@@ -68,7 +69,7 @@ class PluginBase:
 		"""
 		newValue = entry.get()
 		if getattr(self, key) != newValue:
-			print(f"Updating {key}")
+			print(f"Updating {key} to {newValue}")
 			setattr(self, key, newValue)
 
 	def setupGUI(self, tabParent, applyButton):
