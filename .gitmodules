@@ -1,0 +1,3 @@
+[submodule "thirdparty/python-node-editor"]
+	path = thirdparty/python-node-editor
+	url = https://github.com/doxy-ai/python-node-editor.git

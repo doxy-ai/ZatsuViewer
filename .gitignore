@@ -3,5 +3,6 @@ __pycache__
 plugins/credentials/*.py
 !plugins/credentials/*.example.py
 
+venv
 Output
 venv
