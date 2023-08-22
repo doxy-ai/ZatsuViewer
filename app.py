@@ -24,6 +24,8 @@ import asyncio
 import threading
 import datetime
 import time
+import shutil
+import userpaths
 from pathlib import Path
 from importlib import util
 from ring_buffer import RingBuffer
@@ -192,16 +194,26 @@ class App:
 		"""
 		# Get current path
 		path = os.path.abspath(__file__)
-		pluginPath = os.path.dirname(path) + "/plugins"
+		documents = userpaths.get_my_documents()
+		pluginPaths = [
+			os.path.join(os.path.dirname(path), "plugins"),
+			os.path.join(documents, "ZatsuDachi", "plugins")
+		]
 
-		for fname in os.listdir(pluginPath):
-			# Load only "real modules"
-			if not fname.startswith('.') and not fname.startswith('__') and fname.endswith('.py'):
-				try:
-					self.loaded_plugins.append(self.load_module(os.path.join(pluginPath, fname)).Plugin())
-				except Exception:
-					print(fname + " is not a valid plugin!")
-					traceback.print_exc()
+		# Create the plugins folder in documents if it doesn't already exist!
+		if not os.path.exists(pluginPaths[1]):
+			os.makedirs(pluginPaths[1])
+			shutil.copy2(os.path.abspath(os.path.join(path, "..", "downloadPlugin.py")), os.path.join(documents, "ZatsuDachi"))
+
+		for pluginPath in pluginPaths:
+			for fname in os.listdir(pluginPath):
+				# Load only "real modules"
+				if not fname.startswith('.') and not fname.startswith('__') and fname.endswith('.py'):
+					try:
+						self.loaded_plugins.append(self.load_module(os.path.join(pluginPath, fname)).Plugin())
+					except Exception:
+						print(fname + " is not a valid plugin!")
+						traceback.print_exc()
 		
 		# Sort the plugins alphabetically (but with URL Settings always being first!)
 		self.loaded_plugins.sort(key=lambda p: p.name if p.name != "URL Settings Display" else "\0URL Settings")

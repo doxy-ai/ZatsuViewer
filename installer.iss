@@ -19,7 +19,7 @@ Source: "*.*"; Excludes: "installer.iss,.git,*__pycache__*"; DestDir: "{app}"; F
 
 [Run]
 Filename: {#PythonURL}; Description: "Open Python Download Page (rerun installer after installing Python)"; Flags: postinstall runascurrentuser shellexec waituntilterminated unchecked; 
-Filename: "{app}\pythonFinder.bat"; WorkingDir: "{app}"; Parameters: "-m pip install colour flask flask_socketio tk requests"; Description: "Install Needed Python Dependencies (Recommended)"; Flags: postinstall runascurrentuser shellexec waituntilterminated;
+Filename: "{app}\pythonFinder.bat"; WorkingDir: "{app}"; Parameters: "-m pip install colour flask flask_socketio tk requests userpaths"; Description: "Install Needed Python Dependencies (Recommended)"; Flags: postinstall runascurrentuser shellexec waituntilterminated;
 Filename: "{app}\pythonFinder.bat"; WorkingDir: "{app}"; Parameters: "downloadPlugin.py twitch"; Description: "Install Twitch Support"; Flags: postinstall runascurrentuser unchecked shellexec waituntilterminated; Check: ShouldGetTwitch
 Filename: "{app}\pythonFinder.bat"; WorkingDir: "{app}"; Parameters: "downloadPlugin.py youtube"; Description: "Install Youtube Support"; Flags: postinstall runascurrentuser unchecked shellexec waituntilterminated; Check: ShouldGetYoutube
 Filename: "{app}\pythonFinder.bat"; WorkingDir: "{app}"; Parameters: "downloadPlugin.py vstream"; Description: "Install Vstream Support"; Flags: postinstall runascurrentuser unchecked shellexec waituntilterminated; Check: ShouldGetVstream

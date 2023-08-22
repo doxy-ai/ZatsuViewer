@@ -4,3 +4,4 @@ plugins/credentials/*.py
 !plugins/credentials/*.example.py
 
 Output
+venv
