@@ -14,7 +14,7 @@ Huge shout out to DreadExcalibur for the name!
 ## Supported Platforms
 
 Currently I provide first party support for the following platforms
-* Twitch: (plugin can be downloaded here: https://gist.github.com/doxy-ai/c6c20f07cad0a11ec4b620003f12537a)
+* Twitch: (plugin can be downloaded here: https://gist.github.com/doxy-ai/8fae7aeb8890f5bed3e2fa7843af9084)
 * Youtube: (plugin: https://gist.github.com/doxy-ai/f567236fd6320e721cbd127b11ca7cb0)
 * Vstream: (plugin: https://gist.github.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4)
 
