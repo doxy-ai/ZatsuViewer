@@ -196,7 +196,10 @@ class App:
 				# Load only "real modules"
 				if not fname.startswith('.') and not fname.startswith('__') and fname.endswith('.py'):
 					try:
-						self.loaded_plugins.append(self.load_module(os.path.join(pluginPath, fname)).Plugin())
+						module = self.load_module(os.path.join(pluginPath, fname))
+						plugin = module.Plugin()
+						plugin._loaded_module = module
+						self.loaded_plugins.append(plugin)
 					except Exception:
 						print(fname + " is not a valid plugin!")
 						traceback.print_exc()

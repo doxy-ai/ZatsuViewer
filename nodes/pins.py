@@ -1,7 +1,12 @@
-from thirdparty import pin, color2QT
+import sys, os
 from colour import Color
 from PySide6 import QtCore, QtGui
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "thirdparty", "python-node-editor")))
+from node_editor import pin
+
+def color2QT(c: Color):
+	return QtGui.QColor(c.red * 255, c.green * 255, c.blue * 255)
 
 def getConnectionInput(connection):
 	for pin in connection.pins():

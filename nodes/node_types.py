@@ -1,8 +1,11 @@
 from events import Events
-from thirdparty import node
-import pins
-import sys
+import sys, os
 import threading
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "thirdparty", "python-node-editor")))
+sys.path.insert(0, os.path.dirname(__file__))
+import pins
+from node_editor import node
 
 def run_now_or_soon(condition, function, *args, toWait=.001):
 	if condition:

@@ -1,4 +1,5 @@
 # Import necessary modules
+import os, sys
 from flask import Flask
 from flask_socketio import SocketIO
 from app import App
@@ -25,6 +26,7 @@ class PluginBase:
 
 	name = "base"
 	_keepAlive = True
+	_loaded_module = None
 
 	def stop(self):
 		"""
@@ -71,7 +73,7 @@ class PluginBase:
 		if getattr(self, key) != newValue:
 			print(f"Updating {key} to {newValue}")
 			setattr(self, key, newValue)
-			
+
 
 	def shutdown_application(self):
 		_singletonApp.shutdown()
