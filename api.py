@@ -71,61 +71,13 @@ class PluginBase:
 		if getattr(self, key) != newValue:
 			print(f"Updating {key} to {newValue}")
 			setattr(self, key, newValue)
+			
 
-	def setupGUI(self, tabParent, applyButton):
-		"""
-		Set up the graphical user interface (GUI) based on the class attributes.
+	def shutdown_application(self):
+		_singletonApp.shutdown()
 
-		Args:
-			tabParent: An form in a tab field representing the parent container for the GUI elements.
-
-		Returns:
-			ttk.Frame: The frame containing the GUI elements.
-		"""
-		def camel2Title(old):
-			"""
-			Convert a string from camel case to title case with spaces.
-
-			Args:
-				old (str): The string to convert.
-
-			Returns:
-				str: The converted string.
-			"""
-			out = ""
-			for i, char in enumerate(old):
-				if char.isupper() or char == '_':
-					out += ' '
-				out += char.upper() if i == 0 else char
-			return out
-
-		# Create a frame to hold the GUI elements
-		content = ttk.Frame(tabParent)
-		content.grid()
-
-		row = 0
-		for key in type(self).__dict__.keys():
-			if key[0] == "_": continue  # Skip keys starting with underscore
-			if key == "name": continue  # Skip the key "name"
-			if key == "pluginImageURL": continue  # Skip the key "pluginImageURL"
-			if callable(type(self).__dict__[key]): continue  # Skip if the value is a function
-
-			# Create a label with the title-cased key and place it in the grid
-			ttk.Label(content, text=camel2Title(key)).grid(row=row, sticky='nesw')
-
-			# Create a text entry and insert the value associated with the field
-			entry = ttk.Entry(content)
-			entry.insert(10, type(self).__dict__[key])
-			entry.grid(row=row, column=1, sticky='nesw')
-
-			# Bind hitting enter or moving your mouse out of the field to update the field with the entry value
-			entry.bind("<Return>", lambda _, key=key: self._updateKey(key, entry))
-			entry.bind("<Leave>", lambda _, key=key: self._updateKey(key, entry))
-
-			row += 1  # Increment the row counter
-
-		return content
-
+	def add_main_thread_task(self, task, priority=0):
+		_singletonApp.mainThreadWorkQueue.put((priority, task))
 
 	def recieve_message(self, message):
 		"""

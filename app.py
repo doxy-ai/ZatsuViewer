@@ -32,6 +32,7 @@ from ring_buffer import RingBuffer
 from message import Message
 from tkinter import ttk, Tk, W, E, N
 from killableThread import KThread
+from queue import PriorityQueue
 
 class App:
 	"""
@@ -41,14 +42,24 @@ class App:
 	registered_emotes = {}  # A dictionary of registered emotes
 	registered_badges = {}  # A dictionary of registered badges
 
+	is_running = True
+
 	maxMessages = 20  # Maximum number of messages to keep in the queue
 	messages = RingBuffer(maxMessages)  # A ring buffer of messages
 
 	threads = [] # The threads that should get restarted when configuation changes update
-	
-	# References to special GUI elements
-	guiRoot = None
-	applyBtn = None
+	mainThreadWorkQueue = PriorityQueue()
+
+	def stop(self):
+		# Iterate over each thread in the original list
+		for thread in self.threads:
+			plugin = self.find_plugin(thread.name)
+			# Terminate or stop the execution of the thread
+			plugin.stop()
+			thread.kill()
+			thread.join()
+
+		self.threads = []
 
 	def restart(self):
 		"""
@@ -60,11 +71,6 @@ class App:
 		# Create a copy of the current list of threads and clear the existing threads
 		oldThreads = self.threads
 		self.threads = []
-
-		# Provide some feedback to the user
-		self.applyBtn['text'] = "Applying... (please wait)"
-		self.applyBtn['state'] = "disabled"
-		self.guiRoot.update_idletasks()
 
 		# Iterate over each thread in the original list
 		for thread in oldThreads:
@@ -84,10 +90,6 @@ class App:
 		for thread in self.threads:
 			thread.start()
 
-		# Reset the apply button
-		self.applyBtn['text'] = "Apply Changes"
-		self.applyBtn['state'] = "normal"
-
 
 
 	def go(self):
@@ -97,37 +99,21 @@ class App:
 		# Load all of the plugins in the folder and call setup on them
 		self.load_plugins()
 
-		# Create a tab holder
-		self.guiRoot = Tk()
-		self.guiRoot.title("ZatsuDachi Configuration")
-		frm = ttk.Frame(self.guiRoot)
-		frm.grid()
-		tab_parent = ttk.Notebook(frm)
-		tab_parent.grid(row=0, sticky='we')
-
-		# Now add a button that restarts some threads with the given changes
-		self.applyBtn = ttk.Button(frm, text='Apply Changes', command=lambda: self.restart())
-		self.applyBtn.grid(row=1)
-
 		# For each loaded plugin...
 		for plugin in self.loaded_plugins:
-			# Attempt to setup its gui
-			gui = plugin.setupGUI(tab_parent, self.applyBtn)
-			# If there is a gui... start its thread in a way that can be restarted
-			if gui != None: 
-				tab_parent.add(gui, text=plugin.name) # Add the plugin as a tab!
+			self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()), name=plugin.name)) #TODO: is it worth the effort to check if its a coroutine? or just assume everything is?
+			self.threads[-1].start()
 
-				self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()), name=plugin.name)) #TODO: is it worth the effort to check if its a coroutine? or just assume everything is?
-				self.threads[-1].start()
 
-			# Otherwise start its thread and forget about it!
-			else: threading.Thread(target=lambda: asyncio.run(plugin.go())).start()
-			
-		# Show the GUI
-		frm.pack(anchor=N, fill='both', expand=True)
-		print("Close the GUI and press CTRL+C to close!")
-		self.guiRoot.mainloop()
+	def process_main_thread_tasks(self):
+		while self.is_running and not self.mainThreadWorkQueue.empty():
+			task = self.mainThreadWorkQueue.get()
+			task[1]() # Assumes the work provided is a tuple of a priority and the actual task (the format the api gives us!)
+			self.mainThreadWorkQueue.task_done()
 
+
+	def shutdown(self):
+		self.is_running = False
 
 
 	def recieve_message(self, message: Message):
