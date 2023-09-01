@@ -140,7 +140,8 @@ class NodeEditor(QtWidgets.QMainWindow):
 		if not project_path:
 			return
 
-		project_path = Path(project_path)
+		print(project_path)
+		project_path = Path(project_path[0])
 		if project_path.exists():
 
 		# 	self.imports = {}
