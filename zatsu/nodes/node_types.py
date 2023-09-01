@@ -1,4 +1,5 @@
 from events import Events
+from colour import Color
 import sys, os
 import threading
 
@@ -21,6 +22,9 @@ class NodeBase(node.Node):
 	is_output = True
 
 
+
+	# Overriden by the register plugin function
+	plugin = None
 
 	def __init__(self):
 		super().__init__()
@@ -148,21 +152,23 @@ class Node(NodeBase):
 
 
 class PlatformNode(NodeBase):
-	def __init__(self, name): # Name is required to be passed by derived nodes
+	def __init__(self, name):
 		super().__init__()
-		self.title_text = name #TODO: Correct?
+		self.title_text = name
+		self.type_text = "Platforms"
 		self.add_platform_pin(NodeBase.is_output)
 		self.events = Events()
-
-		#TODO: Add buttons to start/restart and stop platform
 
 	def execute(self):
 		raise RuntimeError("Event nodes can't be directly executed!")
 
 class EventNode(NodeBase):
-	def __init__(self, name): # Name is required to be passed by derived nodes
+	def __init__(self, name):
 		super().__init__()
-		self.title_text = name #TODO: Correct?
+		self.title_text = name
+		self.type_text = "Events"
+		self.set_color(title_color=(230, 220, 0))
+
 		platform = self.add_platform_pin()
 		self.add_execution_pin(name, NodeBase.is_output)
 

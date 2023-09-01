@@ -27,6 +27,8 @@ class Message:
 	senderBadges : list[str] = field(default_factory=list)
 	"""[str]: Badges that should be displayed next to the user's name"""
 
+	originatingPlatform = None
+
 	def render_as_html(self) -> str:
 		"""Render message as HTML
 

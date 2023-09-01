@@ -40,10 +40,6 @@ class OnMessageNode(EventNode):
 	def __init__(self):
 		super().__init__("On Message")
 
-		self.title_text = "On Message"
-		self.type_text = "Events"
-		self.set_color(title_color=(128, 0, 0))
-
 		self.message = self.add_pin("Message", Message, EventNode.is_output)
 
 		self.build()
