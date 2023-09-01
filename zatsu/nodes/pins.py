@@ -2,7 +2,7 @@ import sys, os
 from colour import Color
 from PySide6 import QtCore, QtGui
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "thirdparty", "python-node-editor")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "thirdparty", "python-node-editor")))
 from node_editor import pin
 
 def color2QT(c: Color):

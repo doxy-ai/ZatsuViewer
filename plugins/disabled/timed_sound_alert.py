@@ -1,6 +1,6 @@
 #requirements: pip install playsound
-import api, playsound
-from api import PluginBase, datetime
+import zatsu.api, playsound
+from zatsu.api import PluginBase, datetime
 
 class Plugin(PluginBase):
     """

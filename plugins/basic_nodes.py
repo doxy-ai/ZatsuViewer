@@ -1,7 +1,7 @@
 # Import required packages
-from api import PluginBase, Message, Color
-from nodes.node_types import *
-from nodes.pins import *
+from zatsu.api import PluginBase, Message, Color
+from zatsu.nodes.node_types import *
+from zatsu.nodes.pins import *
 
 
 # Define the plugin class

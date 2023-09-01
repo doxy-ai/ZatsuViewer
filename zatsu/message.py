@@ -1,5 +1,5 @@
 # requirements: pip install colour
-import api
+import zatsu.api
 from dataclasses import dataclass, field
 from flask import escape
 from colour import Color

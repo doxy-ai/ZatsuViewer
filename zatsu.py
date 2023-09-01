@@ -9,7 +9,7 @@ The _singletonApp module is responsible for ensuring that only one instance of t
 The script runs an infinite loop to keep the main thread alive.
 """
 
-from api import _singletonApp
+from zatsu.api import _singletonApp
 
 if __name__ == "__main__":
 	_singletonApp.go() # Launches plugin threads

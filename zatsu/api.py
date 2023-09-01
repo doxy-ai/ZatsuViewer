@@ -2,8 +2,8 @@
 import os, sys
 from flask import Flask
 from flask_socketio import SocketIO
-from app import App
-from message import Message
+from zatsu.app import App
+from zatsu.message import Message
 from colour import Color
 from datetime import datetime
 from tkinter import ttk, Tk

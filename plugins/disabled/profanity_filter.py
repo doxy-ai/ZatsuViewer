@@ -1,6 +1,6 @@
 #requirements: pip install better_profanity
-import api
-from api import PluginBase
+import zatsu.api
+from zatsu.api import PluginBase
 from better_profanity import profanity
 
 class Plugin(PluginBase):

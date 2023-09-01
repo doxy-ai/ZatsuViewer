@@ -18,7 +18,8 @@ load_plugins(): Loads all the plugins in the "plugins" folder and calls their se
 load_module(path): Loads a module from the given file path.
 """
 
-import os
+import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "thirdparty")))
 import traceback
 import asyncio
 import threading
@@ -29,9 +30,9 @@ import userpaths
 from pathlib import Path
 from importlib import util
 from ring_buffer import RingBuffer
-from message import Message
-from tkinter import ttk, Tk, W, E, N
+from zatsu.message import Message
 from killableThread import KThread
+from tkinter import ttk, Tk, W, E, N
 from queue import PriorityQueue
 
 class App:
@@ -179,10 +180,10 @@ class App:
 		Loads all valid plugins in the plugins folder.
 		"""
 		# Get current path
-		path = os.path.abspath(__file__)
+		path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 		documents = userpaths.get_my_documents()
 		pluginPaths = [
-			os.path.join(os.path.dirname(path), "plugins"),
+			os.path.join(path, "plugins"),
 			os.path.join(documents, "ZatsuDachi", "plugins")
 		]
 

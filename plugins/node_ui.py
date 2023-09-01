@@ -1,5 +1,5 @@
 # Import required packages
-from api import PluginBase, Message, Color
+from zatsu.api import PluginBase, Message, Color
 from queue import Queue
 
 from pathlib import Path
@@ -11,7 +11,7 @@ import time
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-sys.path.append(os.path.join(os.getcwd(), "thirdparty/python-node-editor"))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "thirdparty", "python-node-editor")))
 
 from node_editor.gui.node_list import NodeList
 from node_editor.gui.node_widget import NodeWidget
