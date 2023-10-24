@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import sys
 import requests
+from requests_html import HTMLSession
 import pip
 
 def install_package(package):
@@ -22,10 +23,14 @@ option = sys.argv[1]
 
 # Define the file URLs based on the provided option
 file_urls = {
-	"twitch": "https://gist.githubusercontent.com/doxy-ai/8fae7aeb8890f5bed3e2fa7843af9084/raw/becaf424107e42b164139d8c8fc24379d545fd18/twitch.py",
-	"youtube": "https://gist.githubusercontent.com/doxy-ai/f567236fd6320e721cbd127b11ca7cb0/raw/c0ff9d4c450ae002bf45b5e1637af0542fd4ee9d/youtube.py",
-	"vstream": "https://gist.githubusercontent.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4/raw/3b4719fcdb0220076d07fbf24357b1b03f84ff87/vstream.py"
+	"twitch": "https://gist.github.com/doxy-ai/8fae7aeb8890f5bed3e2fa7843af9084",
+	"youtube": "https://gist.github.com/doxy-ai/f567236fd6320e721cbd127b11ca7cb0",
+	"vstream": "https://gist.github.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4"
 }
+
+# Scrape the latest version of the plugin from the link
+session = HTMLSession()
+file_urls = {key:list(session.get(url).html.find('.file-actions', first=True).absolute_links)[0] for (key,url) in file_urls.items()}
 
 # Check if the provided option is valid
 if option not in file_urls:
