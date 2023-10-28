@@ -15,7 +15,7 @@ def install_package(package):
 # Check if the correct number of arguments is provided
 if len(sys.argv) != 2:
 	print("Usage: python downloadPlugin.py [option]")
-	print("Options: twitch, youtube, or vstream")
+	print("Options: twitch, youtube, vstream, or kick")
 	sys.exit(1)
 
 # Retrieve the option from the command line argument
@@ -25,7 +25,8 @@ option = sys.argv[1]
 file_urls = {
 	"twitch": "https://gist.github.com/doxy-ai/8fae7aeb8890f5bed3e2fa7843af9084",
 	"youtube": "https://gist.github.com/doxy-ai/f567236fd6320e721cbd127b11ca7cb0",
-	"vstream": "https://gist.github.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4"
+	"vstream": "https://gist.github.com/doxy-ai/364d9804d97c8d37285e7b8671d274d4",
+	"kick": "https://gist.github.com/doxy-ai/f605f31922051151dc044494d1d9af56"
 }
 
 # Scrape the latest version of the plugin from the link
@@ -60,6 +61,8 @@ try:
 		case "vstream":
 			install_package("websocket-client")
 			install_package("cbor2")
+		case "kick":
+			install_package("tls_client")
 
 except requests.exceptions.RequestException as e:
 	print(f"Error occurred while downloading the file: {e}")
