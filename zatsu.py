@@ -3,7 +3,7 @@
 This script launches a singleton instance of ZatsuDachi.
 
 Usage: python zatsu.py
-Setup: pip install colour flask flask_socketio tk requests userpaths
+Setup: pip install colour flask flask_socketio customtkinter requests requests-html userpaths
 
 The _singletonApp module is responsible for ensuring that only one instance of the application is running.
 The script runs an infinite loop to keep the main thread alive.

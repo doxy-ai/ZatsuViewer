@@ -5,7 +5,7 @@ from app import App
 from message import Message
 from colour import Color
 from datetime import datetime
-from tkinter import ttk, Tk
+import customtkinter as ctk
 
 # Initialize Flask and SocketIO instances
 flask = Flask(__name__)
@@ -72,12 +72,12 @@ class PluginBase:
 			print(f"Updating {key} to {newValue}")
 			setattr(self, key, newValue)
 
-	def setupGUI(self, tabParent, applyButton):
+	def setupGUI(self, content, applyButton):
 		"""
 		Set up the graphical user interface (GUI) based on the class attributes.
 
 		Args:
-			tabParent: An form in a tab field representing the parent container for the GUI elements.
+			content: An form in a tab field representing the parent container for the GUI elements.
 
 		Returns:
 			ttk.Frame: The frame containing the GUI elements.
@@ -99,9 +99,9 @@ class PluginBase:
 				out += char.upper() if i == 0 else char
 			return out
 
-		# Create a frame to hold the GUI elements
-		content = ttk.Frame(tabParent)
-		content.grid()
+		# Have the content fill the horizontal space available
+		content.grid_columnconfigure(0, weight=1)
+		content.grid_columnconfigure(1, weight=2)
 
 		row = 0
 		for key in type(self).__dict__.keys():
@@ -111,16 +111,20 @@ class PluginBase:
 			if callable(type(self).__dict__[key]): continue  # Skip if the value is a function
 
 			# Create a label with the title-cased key and place it in the grid
-			ttk.Label(content, text=camel2Title(key)).grid(row=row, sticky='nesw')
+			ctk.CTkLabel(content, text=camel2Title(key)).grid(row=row, sticky='nesw')
 
 			# Create a text entry and insert the value associated with the field
-			entry = ttk.Entry(content)
+			sv = ctk.StringVar()
+			entry = ctk.CTkEntry(content, textvariable=sv)
+			sv.trace("w", lambda name, index, mode, key=key, entry=entry: self._updateKey(key, entry))
 			entry.insert(10, type(self).__dict__[key])
 			entry.grid(row=row, column=1, sticky='nesw')
 
-			# Bind hitting enter or moving your mouse out of the field to update the field with the entry value
-			entry.bind("<Return>", lambda _, key=key: self._updateKey(key, entry))
-			entry.bind("<Leave>", lambda _, key=key: self._updateKey(key, entry))
+			# Bind ctrl+a to select all
+			def select_all(entry):
+				entry.select_range(0, 'end')
+				entry.icursor('end')
+			entry.bind('<Control-KeyRelease-a>', lambda event, entry=entry: select_all(entry))
 
 			row += 1  # Increment the row counter
 

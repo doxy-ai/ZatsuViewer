@@ -30,7 +30,7 @@ from pathlib import Path
 from importlib import util
 from ring_buffer import RingBuffer
 from message import Message
-from tkinter import ttk, Tk, W, E, N
+import customtkinter as ctk
 from killableThread import KThread
 
 class App:
@@ -97,34 +97,38 @@ class App:
 		# Load all of the plugins in the folder and call setup on them
 		self.load_plugins()
 
+		# Set what the application should look like
+		ctk.set_appearance_mode("System")  # Modes: system (default), light, dark
+		ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
+
 		# Create a tab holder
-		self.guiRoot = Tk()
-		self.guiRoot.title("ZatsuDachi Configuration")
-		frm = ttk.Frame(self.guiRoot)
-		frm.grid()
-		tab_parent = ttk.Notebook(frm)
-		tab_parent.grid(row=0, sticky='we')
+		self.guiRoot = ctk.CTk()
+		self.guiRoot.title("ZatsuViewer Configuration")
+		self.guiRoot.grid_columnconfigure(0, weight=1)
+		self.guiRoot.grid_rowconfigure(0, weight=1)
+		tab_parent = ctk.CTkTabview(self.guiRoot)
+		tab_parent.grid(row=0, sticky="nsew", padx=20)
 
 		# Now add a button that restarts some threads with the given changes
-		self.applyBtn = ttk.Button(frm, text='Apply Changes', command=lambda: self.restart())
-		self.applyBtn.grid(row=1)
+		self.applyBtn = ctk.CTkButton(self.guiRoot, text='Apply Changes', command=lambda: self.restart())
+		self.applyBtn.grid(row=1, pady=10)
 
 		# For each loaded plugin...
 		for plugin in self.loaded_plugins:
 			# Attempt to setup its gui
-			gui = plugin.setupGUI(tab_parent, self.applyBtn)
+			tab_parent.add(plugin.name)
+			gui = plugin.setupGUI(tab_parent.tab(plugin.name), self.applyBtn)
 			# If there is a gui... start its thread in a way that can be restarted
 			if gui != None: 
-				tab_parent.add(gui, text=plugin.name) # Add the plugin as a tab!
-
 				self.threads.append(KThread(target=lambda: asyncio.run(plugin.go()), name=plugin.name)) #TODO: is it worth the effort to check if its a coroutine? or just assume everything is?
 				self.threads[-1].start()
 
-			# Otherwise start its thread and forget about it!
-			else: threading.Thread(target=lambda: asyncio.run(plugin.go())).start()
+			# Otherwise start its thread and forget about it! And remove its tab
+			else: 
+				threading.Thread(target=lambda: asyncio.run(plugin.go())).start()
+				tab_parent.delete(plugin.name)
 			
 		# Show the GUI
-		frm.pack(anchor=N, fill='both', expand=True)
 		print("Close the GUI and press CTRL+C to close!")
 		self.guiRoot.mainloop()
 
