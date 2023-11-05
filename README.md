@@ -39,7 +39,7 @@ If you have made a plugin for another platform (or a better version of one of th
 3) Unzip ZatsuDachi somewhere and note where
 4) Open a terminal (this can be done by opening the start window on windows and typing cmd)
 5) Navigate to where you unzipped ZatsuDachi (cd <the folder from step 3>)
-6) Run `pip install colour flask flask_socketio customtkinter requests requests-html userpaths` to install ZatsuDachi's dependencies.
+6) Run `pip install colour flask flask_socketio packaging customtkinter requests requests-html userpaths` to install ZatsuDachi's dependencies.
 *NOTE: If you are using linux you will need to install libtk using your package manager*
 7) (optional) Run `python downloadPlugin.py` to download one of the platform plugins above (this will automatically install its dependencies!)
 8) Run `python zatsu.py` in the terminal we opened to launch ZatsuDachi
