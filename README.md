@@ -54,7 +54,7 @@ A) This usually means that when you installed python you forgot to check the box
 
 Q) How do I combine multiple streams from the same platform.
 
-A) One each plugin only supports a single stream... that means you would need to go into the plugin folder and duplicate the appropriate plugin for each additional stream you want to view.
+A) Each plugin only supports a single stream... that means you would need to go into the plugin folder and duplicate the appropriate plugin for each additional stream you want to view.
 
 ## Setup
 
